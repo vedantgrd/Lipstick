@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lip Lush</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="navbar-brand">LipLush</a>
+            
+            <ul class="nav-menu" id="nav-menu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link active">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="about.html" class="nav-link">About</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a href="#" class="nav-link">Services</a>
+                    <div class="dropdown-content">
+                        <a href="#">Web Development</a>
+                        <a href="#">UI/UX Design</a>
+                        <a href="#">Consulting</a>
+                        <a href="#">Support</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Contact</a>
+                </li>
+            </ul>
+
+            <form class="search-form">
+                <input type="search" class="search-input" placeholder="Search...">
+                <button type="submit" class="search-btn">Search</button>
+            </form>
+
+            <button class="mobile-menu-toggle" id="mobile-toggle">☰</button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <section class="hero-section">
+                <h1>Welcome to LipLush</h1>
+                <p>This is a beautiful LipLuxe website for all your lip care needs.</p>
+                <img src="lips.png" alt="" class="hero-image">
+            </section>
+            <section class="about-section">
+              <h1 class="autoShow">Introduction</h1>
+              <img src="flower.png" alt="" class="autoRotate">
+              <div class="content-row">
+                <img src="l1.png" alt="Lipstick product" class="autoShow">
+                <p class="autoShow">At Lush Lips, we believe beauty is all about confidence. Our lipsticks are designed to make you feel bold, radiant, and unstoppable. With rich colors, smooth textures, and long-lasting formulas, we bring you the perfect blend of style and comfort.</p>
+              </div>
+              <div class="content-row reverse">
+                <img src="heart.png" alt="Heart product" class="autoShow">
+                <p class="autoShow">We believe in creating products that enhance your natural beauty while keeping your lips healthy and moisturized. Our heart-inspired formulas provide long-lasting color and nourishment for every moment of your day.</p>
+              </div>
+              <div class="tagline">
+                <span class="autoBlur">Lip</span>
+                <span class="autoBlur">Lush</span>
+                <span class="autoBlur">Makes</span>
+                <span class="autoBlur">Your</span>
+                <span class="autoBlur">Day</span>
+                <span class="autoBlur">Beautiful</span>
+              </div>
+            </section>
+            
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>MyWebsite</h3>
+                <p>Building amazing web experiences with modern technologies and clean design. We create beautiful, responsive websites that work perfectly on all devices.</p>
+                <div class="social-links">
+                    <a href="#">📘</a>
+                    <a href="#">🐦</a>
+                    <a href="#">💼</a>
+                    <a href="#">📷</a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="#">Services</a></li>
+                    <li><a href="#">Portfolio</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Services</h3>
+                <ul>
+                    <li><a href="#">Web Development</a></li>
+                    <li><a href="#">UI/UX Design</a></li>
+                    <li><a href="#">Mobile Apps</a></li>
+                    <li><a href="#">SEO Optimization</a></li>
+                    <li><a href="#">Maintenance</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Contact Info</h3>
+                <p>📧 contact@mywebsite.com</p>
+                <p>📞 +1 (555) 123-4567</p>
+                <p>📍 123 Web Street, Digital City, DC 12345</p>
+                <p>🕒 Mon - Fri: 9:00 AM - 6:00 PM</p>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2024 MyWebsite. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle functionality
+        document.getElementById('mobile-toggle').addEventListener('click', function() {
+            const navMenu = document.getElementById('nav-menu');
+            navMenu.classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function() {
+                document.getElementById('nav-menu').classList.remove('active');
+            });
+        });
+
+        // Search form functionality
+        document.querySelector('.search-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const searchTerm = document.querySelector('.search-input').value;
+            if (searchTerm.trim()) {
+                alert('Searching for: ' + searchTerm);
+            }
+        });
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Lip Lush</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="navbar-brand">LipLush</a>
+            
+            <ul class="nav-menu" id="nav-menu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="about.html" class="nav-link active">About</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a href="#" class="nav-link">Services</a>
+                    <div class="dropdown-content">
+                        <a href="#">Web Development</a>
+                        <a href="#">UI/UX Design</a>
+                        <a href="#">Consulting</a>
+                        <a href="#">Support</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Contact</a>
+                </li>
+            </ul>
+
+            <form class="search-form">
+                <input type="search" class="search-input" placeholder="Search...">
+                <button type="submit" class="search-btn">Search</button>
+            </form>
+
+            <button class="mobile-menu-toggle" id="mobile-toggle">☰</button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="banner"> 
+            <div class="slider" style="--quantity:10">
+                <div class="item1" style="--position:1"><img src="img1.jpeg" alt=""></div>
+                <div class="item2" style="--position:2"><img src="img2.jpeg" alt=""></div>
+                <div class="item3"  style="--position:3"><img src="img3.jpeg" alt=""></div>
+                <div class="item4" style="--position:4"><img src="img4.jpeg" alt=""></div>
+                <div class="item5" style="--position:5"><img src="img5.jpeg" alt=""></div>
+                <div class="item6" style="--position:6"><img src="img6.jpeg" alt=""></div>
+                <div class="item7" style="--position:7"><img src="img7.jpeg" alt=""></div>
+                <div class="item8" style="--position:8"><img src="img8.jpeg" alt=""></div>
+                <div class="item9" style="--position:9"><img src="img9.jpeg" alt=""></div>
+                <div class="item10" style="--position:10"><img src="img10.jpeg" alt=""></div>
+            </div>
+            <div class="content">
+                <h1 data-content="About Us">
+                About Us
+                </h1>
+                <div class="author">
+                    <h2>Lip Lush </h2>
+                    <p><b>Its all about LoVe and cArE !!!</b></p>
+                </div>
+                <div class="model"></div>
+            </div>
+        </div>
+        <div class="list">
+            <h2>Our Chairpersons</h2>
+            <div class="item"><img src="h1.jpeg"></div>
+            <div class="item"><img src="h2.jpeg"></div>
+            <div class="item"><img src="h3.jpeg"></div>
+            <div class="item"><img src="h9.jpeg"></div>
+            <div class="item"><img src="h14.jpeg"></div>
+            <h2>Our Marketing Heads</h2>
+            <div class="item"><img src="h4.jpeg"></div>
+            <div class="item"><img src="h5.jpeg"></div>
+            <div class="item"><img src="h6.jpeg"></div>
+            <div class="item"><img src="h15.jpeg"></div>
+            <div class="item"><img src="h12.jpeg"></div>
+            <h2>Our Secretary</h2>
+            <div class="item"><img src="h7.jpeg"></div>
+            <div class="item"><img src="h8.jpeg"></div>
+            <div class="item"><img src="h13.jpeg"></div>
+            <div class="item"><img src="h11.jpeg"></div>
+            <div class="item"><img src="h10.jpeg"></div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>MyWebsite</h3>
+                <p>Building amazing web experiences with modern technologies and clean design. We create beautiful, responsive websites that work perfectly on all devices.</p>
+                <div class="social-links">
+                    <a href="#">📘</a>
+                    <a href="#">🐦</a>
+                    <a href="#">💼</a>
+                    <a href="#">📷</a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="#">Services</a></li>
+                    <li><a href="#">Portfolio</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Services</h3>
+                <ul>
+                    <li><a href="#">Web Development</a></li>
+                    <li><a href="#">UI/UX Design</a></li>
+                    <li><a href="#">Mobile Apps</a></li>
+                    <li><a href="#">SEO Optimization</a></li>
+                    <li><a href="#">Maintenance</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Contact Info</h3>
+                <p>📧 contact@mywebsite.com</p>
+                <p>📞 +1 (555) 123-4567</p>
+                <p>📍 123 Web Street, Digital City, DC 12345</p>
+                <p>🕒 Mon - Fri: 9:00 AM - 6:00 PM</p>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2024 MyWebsite. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle functionality
+        document.getElementById('mobile-toggle').addEventListener('click', function() {
+            const navMenu = document.getElementById('nav-menu');
+            navMenu.classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function() {
+                document.getElementById('nav-menu').classList.remove('active');
+            });
+        });
+
+        // Search form functionality
+        document.querySelector('.search-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const searchTerm = document.querySelector('.search-input').value;
+            if (searchTerm.trim()) {
+                alert('Searching for: ' + searchTerm);
+            }
+        });
+    </script>
+</body>
+</html>
+
