@@ -799,6 +799,22 @@
   .collage-img:nth-child(3) {
     transform: rotate(-4deg) translateY(14px);
   }
+
+  /* Page load fade animation */
+  body {
+    animation: pageFade 0.8s ease;
+  }
+
+  @keyframes pageFade {
+    from { 
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to { 
+      opacity: 1;
+      transform: translateY(0);
+    }
+}
   </style>
 </head>
 <body>
