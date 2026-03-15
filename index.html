@@ -1,152 +1,1076 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lip Lush</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LipLush — Unapologetically You</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Unbounded:wght@300;400;700;900&family=Space+Mono:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #0a0608;
+      --cream: #f5ede6;
+      --blush: #e8435a;
+      --neon: #ff2d55;
+      --gold: #f0c040;
+      --muted: #9a8a85;
+      --glass: rgba(245,237,230,0.04);
+    }
+
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--ink);
+      color: var(--cream);
+      font-family: 'Syne', sans-serif;
+      cursor: none;
+      overflow-x: hidden;
+    }
+
+    /* CUSTOM CURSOR */
+    #cursor {
+      position: fixed;
+      width: 12px; height: 12px;
+      background: var(--neon);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      mix-blend-mode: difference;
+      transition: transform 0.1s ease;
+      transform: translate(-50%, -50%);
+    }
+    #cursor-ring {
+      position: fixed;
+      width: 40px; height: 40px;
+      border: 1.5px solid rgba(255,45,85,0.5);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: width 0.3s, height 0.3s, border-color 0.3s;
+    }
+    body:has(a:hover) #cursor-ring,
+    body:has(button:hover) #cursor-ring {
+      width: 70px; height: 70px;
+      border-color: var(--neon);
+    }
+
+    /* NAVBAR */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 1.5rem 4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      mix-blend-mode: normal;
+    }
+    nav::before {
+      content:'';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(10,6,8,0.9), transparent);
+      pointer-events: none;
+    }
+    .nav-logo {
+      font-family: 'Unbounded', sans-serif;
+      font-weight: 900;
+      font-size: 1.4rem;
+      letter-spacing: -1px;
+      color: var(--cream);
+      text-decoration: none;
+      position: relative;
+      z-index: 1;
+    }
+    .nav-logo span { color: var(--neon); }
+    .nav-links {
+      display: flex;
+      gap: 3rem;
+      list-style: none;
+      position: relative;
+      z-index: 1;
+    }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.8rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--cream); }
+    .nav-cta {
+      position: relative; z-index: 1;
+      background: var(--neon);
+      color: var(--ink);
+      border: none;
+      padding: 0.6rem 1.8rem;
+      font-family: 'Unbounded', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      cursor: none;
+      clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+      transition: background 0.3s, transform 0.2s;
+    }
+    .nav-cta:hover { background: var(--gold); transform: skewX(-5deg); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 8rem 4rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Animated grain */
+    .hero::before {
+      content:'';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
+      pointer-events: none;
+      opacity: 0.4;
+      animation: grain 0.5s steps(2) infinite;
+    }
+    @keyframes grain {
+      0%,100% { transform: translate(0,0); }
+      10% { transform: translate(-2%,-3%); }
+      30% { transform: translate(3%,2%); }
+      50% { transform: translate(-1%,4%); }
+      70% { transform: translate(2%,-1%); }
+      90% { transform: translate(-3%,1%); }
+    }
+
+    /* Big radial glow */
+    .hero-glow {
+      position: absolute;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(232,67,90,0.25) 0%, transparent 70%);
+      top: 50%; right: 10%;
+      transform: translate(0,-50%);
+      pointer-events: none;
+      animation: breathe 4s ease-in-out infinite;
+    }
+    @keyframes breathe {
+      0%,100% { transform: translate(0,-50%) scale(1); opacity:0.6; }
+      50% { transform: translate(0,-50%) scale(1.2); opacity:1; }
+    }
+
+    .hero-left { position: relative; z-index: 2; }
+
+    .hero-eyebrow {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 4px;
+      color: var(--neon);
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.2s forwards;
+    }
+
+    .hero-title {
+      font-family: 'Unbounded', sans-serif;
+      font-size: clamp(3.5rem, 7vw, 7rem);
+      font-weight: 900;
+      line-height: 0.9;
+      letter-spacing: -3px;
+      margin-bottom: 2rem;
+    }
+    .hero-title .line {
+      display: block;
+      overflow: hidden;
+    }
+    .hero-title .line-inner {
+      display: block;
+      opacity: 0;
+      transform: translateY(100%);
+      animation: slideUp 0.9s cubic-bezier(0.16,1,0.3,1) forwards;
+    }
+    .hero-title .line:nth-child(1) .line-inner { animation-delay: 0.3s; }
+    .hero-title .line:nth-child(2) .line-inner { animation-delay: 0.5s; }
+    .hero-title .line:nth-child(3) .line-inner { animation-delay: 0.7s; color: var(--neon); font-style: italic; }
+
+    .hero-sub {
+      font-size: 1rem;
+      color: var(--muted);
+      max-width: 380px;
+      line-height: 1.7;
+      margin-bottom: 3rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.9s forwards;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+      opacity: 0;
+      animation: fadeUp 0.8s 1.1s forwards;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: var(--neon);
+      color: var(--ink);
+      padding: 1rem 2.5rem;
+      font-family: 'Unbounded', sans-serif;
+      font-weight: 700;
+      font-size: 0.75rem;
+      letter-spacing: 1px;
+      text-decoration: none;
+      text-transform: uppercase;
+      position: relative;
+      overflow: hidden;
+      clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
+      transition: transform 0.3s;
+    }
+    .btn-primary::after {
+      content:'';
+      position: absolute;
+      inset: 0;
+      background: var(--gold);
+      transform: translateX(-100%) skewX(-20deg);
+      transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
+    }
+    .btn-primary:hover::after { transform: translateX(0) skewX(-20deg); }
+    .btn-primary span { position: relative; z-index:1; }
+    .btn-primary:hover { transform: translateY(-3px); }
+
+    .btn-ghost {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--cream);
+      text-decoration: none;
+      letter-spacing: 2px;
+      border-bottom: 1px solid rgba(245,237,230,0.3);
+      padding-bottom: 2px;
+      transition: border-color 0.3s, color 0.3s;
+    }
+    .btn-ghost:hover { color: var(--neon); border-color: var(--neon); }
+
+    /* Hero right — image stack */
+    .hero-right {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 70vh;
+    }
+    .hero-img-wrap {
+      position: relative;
+      width: 340px;
+      opacity: 0;
+      animation: fadeUp 1s 0.6s forwards;
+    }
+    .hero-img-wrap img {
+      width: 100%;
+      border-radius: 4px;
+      display: block;
+      filter: saturate(0.8) contrast(1.1);
+    }
+    /* Decorative frame */
+    .hero-img-wrap::before {
+      content:'';
+      position: absolute;
+      inset: -16px;
+      border: 1px solid rgba(232,67,90,0.3);
+      border-radius: 4px;
+      animation: frameRotate 8s linear infinite;
+    }
+    .hero-img-wrap::after {
+      content: 'NEW DROP ✦';
+      position: absolute;
+      bottom: -20px; right: -20px;
+      background: var(--neon);
+      color: var(--ink);
+      font-family: 'Unbounded', sans-serif;
+      font-size: 0.6rem;
+      font-weight: 900;
+      padding: 0.5rem 1rem;
+      letter-spacing: 2px;
+      clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+    }
+    @keyframes frameRotate {
+      0%,100% { clip-path: inset(0 0 0 0); }
+      25% { clip-path: inset(0 0 0 30%); }
+      50% { clip-path: inset(30% 0 0 0); }
+      75% { clip-path: inset(0 30% 0 0); }
+    }
+
+    /* Floating stats */
+    .stat-pill {
+      position: absolute;
+      background: rgba(245,237,230,0.06);
+      border: 1px solid rgba(245,237,230,0.1);
+      backdrop-filter: blur(20px);
+      padding: 0.75rem 1.25rem;
+      border-radius: 2px;
+    }
+    .stat-pill strong {
+      display: block;
+      font-family: 'Unbounded', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 900;
+      color: var(--neon);
+    }
+    .stat-pill small {
+      font-size: 0.65rem;
+      color: var(--muted);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    .stat-pill:nth-child(2) { top: 10%; left: -30px; animation: float1 3s ease-in-out infinite; }
+    .stat-pill:nth-child(3) { bottom: 20%; right: -40px; animation: float2 4s ease-in-out infinite; }
+    @keyframes float1 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+    @keyframes float2 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(10px)} }
+
+    /* Scrolling ticker */
+    .ticker {
+      border-top: 1px solid rgba(245,237,230,0.08);
+      border-bottom: 1px solid rgba(245,237,230,0.08);
+      padding: 1rem 0;
+      overflow: hidden;
+      white-space: nowrap;
+      background: rgba(245,237,230,0.02);
+    }
+    .ticker-track {
+      display: inline-block;
+      animation: ticker 18s linear infinite;
+    }
+    .ticker-track span {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 0 3rem;
+    }
+    .ticker-track span.accent { color: var(--neon); }
+    @keyframes ticker { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+    /* ── INTRO SECTION ── */
+    .intro {
+      padding: 10rem 4rem;
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      gap: 8rem;
+      align-items: center;
+      position: relative;
+    }
+    .intro-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--neon);
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+    }
+    .intro-headline {
+      font-family: 'Unbounded', sans-serif;
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -2px;
+    }
+    .intro-headline em {
+      font-style: italic;
+      color: var(--neon);
+      display: block;
+    }
+    .intro-number {
+      position: absolute;
+      top: 8rem; left: 4rem;
+      font-family: 'Unbounded', sans-serif;
+      font-size: 15rem;
+      font-weight: 900;
+      color: rgba(245,237,230,0.03);
+      line-height: 1;
+      pointer-events: none;
+      letter-spacing: -10px;
+    }
+    .intro-right p {
+      font-size: 1.1rem;
+      color: var(--muted);
+      line-height: 1.9;
+      margin-bottom: 2rem;
+    }
+    .intro-right p strong { color: var(--cream); }
+
+    /* image collage */
+    .intro-collage {
+      position: relative;
+      height: 500px;
+    }
+    .collage-img {
+      position: absolute;
+      border-radius: 4px;
+      overflow: hidden;
+      transition: transform 0.6s cubic-bezier(0.16,1,0.3,1);
+    }
+    .collage-img img { width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(0.7); transition: filter 0.4s; }
+    .collage-img:hover img { filter: saturate(1.2); }
+    .collage-img:nth-child(1) { width: 55%; height: 70%; top: 0; left: 0; }
+    .collage-img:nth-child(2) { width: 40%; height: 55%; top: 15%; right: 0; }
+    .collage-img:nth-child(3) { width: 35%; height: 40%; bottom: 0; left: 20%; }
+    .collage-img:nth-child(1):hover { transform: rotate(-2deg) scale(1.03); }
+    .collage-img:nth-child(2):hover { transform: rotate(2deg) scale(1.03); }
+    .collage-img:nth-child(3):hover { transform: rotate(-1deg) scale(1.05); }
+    .collage-tag {
+      position: absolute;
+      background: var(--neon);
+      color: var(--ink);
+      font-family: 'Unbounded', sans-serif;
+      font-size: 0.55rem;
+      font-weight: 900;
+      letter-spacing: 2px;
+      padding: 0.3rem 0.8rem;
+      top: 0; right: 0;
+      transform: translate(20%, -50%);
+    }
+
+    /* ── MARQUEE SECTION ── */
+    .marquee-section {
+      padding: 5rem 0;
+      overflow: hidden;
+      position: relative;
+    }
+    .marquee-line {
+      display: flex;
+      gap: 0;
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+    }
+    .marquee-content {
+      display: flex;
+      gap: 4rem;
+      align-items: center;
+      animation: marquee 12s linear infinite;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .marquee-content.reverse { animation-direction: reverse; animation-duration: 15s; }
+    .marquee-content h2 {
+      font-family: 'Unbounded', sans-serif;
+      font-size: clamp(3rem, 6vw, 5rem);
+      font-weight: 900;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(245,237,230,0.2);
+      letter-spacing: -2px;
+      white-space: nowrap;
+    }
+    .marquee-content h2.filled {
+      color: var(--cream);
+      -webkit-text-stroke: none;
+    }
+    .marquee-content h2.accent { color: var(--neon); -webkit-text-stroke: none; }
+    .marquee-diamond { color: var(--neon); font-size: 1.5rem; flex-shrink:0; }
+    @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+    /* ── PRODUCT GRID ── */
+    .products {
+      padding: 8rem 4rem;
+    }
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 4rem;
+    }
+    .section-title {
+      font-family: 'Unbounded', sans-serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 900;
+      letter-spacing: -2px;
+    }
+    .section-title span { color: var(--neon); display: block; font-style: italic; font-size: 0.7em; }
+    .see-all {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 2px;
+      border-bottom: 1px solid rgba(154,138,133,0.3);
+      padding-bottom: 2px;
+      transition: color 0.3s, border-color 0.3s;
+    }
+    .see-all:hover { color: var(--cream); border-color: var(--cream); }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5px;
+    }
+    .product-card {
+      background: rgba(245,237,230,0.03);
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 3/4;
+      cursor: none;
+    }
+    .product-card::before {
+      content:'';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(10,6,8,0.9) 0%, transparent 50%);
+      z-index: 1;
+      transition: opacity 0.4s;
+    }
+    .product-card:hover::before { opacity: 0.7; }
+    .product-img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: saturate(0.6);
+      transition: transform 0.7s cubic-bezier(0.16,1,0.3,1), filter 0.4s;
+    }
+    .product-card:hover .product-img { transform: scale(1.07); filter: saturate(1); }
+    .product-info {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 2rem;
+      z-index: 2;
+      transform: translateY(60px);
+      transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
+    }
+    .product-card:hover .product-info { transform: translateY(0); }
+    .product-shade {
+      display: inline-block;
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      margin-bottom: 0.5rem;
+    }
+    .product-name {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+    .product-price {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--neon);
+    }
+    .product-add {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 1rem;
+      font-size: 0.65rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--cream);
+      background: none;
+      border: 1px solid rgba(245,237,230,0.3);
+      padding: 0.5rem 1rem;
+      cursor: none;
+      font-family: 'Syne', sans-serif;
+      transition: background 0.3s, border-color 0.3s;
+    }
+    .product-add:hover { background: var(--neon); border-color: var(--neon); color: var(--ink); }
+    .product-badge {
+      position: absolute;
+      top: 1.5rem; right: 1.5rem;
+      z-index: 3;
+      background: var(--neon);
+      color: var(--ink);
+      font-family: 'Unbounded', sans-serif;
+      font-size: 0.55rem;
+      font-weight: 900;
+      padding: 0.3rem 0.7rem;
+      letter-spacing: 1px;
+      clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+    }
+    .product-badge.gold { background: var(--gold); }
+
+    /* ── PHILOSOPHY ── */
+    .philosophy {
+      padding: 10rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .philosophy-bg {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 100%, rgba(232,67,90,0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .phil-wrap {
+      max-width: 1000px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .phil-quote {
+      font-family: 'Unbounded', sans-serif;
+      font-size: clamp(2rem, 5vw, 4.5rem);
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -3px;
+      margin-bottom: 3rem;
+    }
+    .phil-quote .word {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.6s, transform 0.6s;
+    }
+    .phil-quote .word.visible { opacity: 1; transform: translateY(0); }
+    .phil-quote .word.neon { color: var(--neon); }
+    .phil-quote .word.italic { font-style: italic; }
+
+    /* ── TAGLINE ── */
+    .tagline-section {
+      padding: 8rem 4rem;
+      overflow: hidden;
+    }
+    .tagline-grid {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .tagline-word {
+      font-family: 'Unbounded', sans-serif;
+      font-size: clamp(5rem, 12vw, 11rem);
+      font-weight: 900;
+      line-height: 0.85;
+      letter-spacing: -5px;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(245,237,230,0.15);
+      opacity: 0;
+      transform: translateX(-80px);
+      transition: opacity 0.8s, transform 0.8s, color 0.4s, -webkit-text-stroke 0.4s;
+    }
+    .tagline-word.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .tagline-word.filled {
+      color: var(--cream);
+      -webkit-text-stroke: none;
+    }
+    .tagline-word.neon-fill {
+      color: var(--neon);
+      -webkit-text-stroke: none;
+    }
+    .tagline-word:nth-child(1) { align-self: flex-start; transition-delay: 0s; }
+    .tagline-word:nth-child(2) { align-self: flex-end; transition-delay: 0.1s; }
+    .tagline-word:nth-child(3) { align-self: flex-start; padding-left: 8%; transition-delay: 0.2s; }
+    .tagline-word:nth-child(4) { align-self: flex-end; transition-delay: 0.3s; }
+    .tagline-word:nth-child(5) { align-self: center; transition-delay: 0.4s; }
+    .tagline-word:nth-child(6) { align-self: flex-start; transition-delay: 0.5s; }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid rgba(245,237,230,0.06);
+      padding: 6rem 4rem 3rem;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 4rem;
+      margin-bottom: 5rem;
+    }
+    .footer-brand {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 900;
+      letter-spacing: -2px;
+      margin-bottom: 1rem;
+    }
+    .footer-brand span { color: var(--neon); }
+    .footer-tagline {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 280px;
+      margin-bottom: 2rem;
+    }
+    .footer-socials { display: flex; gap: 1rem; }
+    .footer-social {
+      width: 40px; height: 40px;
+      border: 1px solid rgba(245,237,230,0.1);
+      display: flex; align-items:center; justify-content:center;
+      font-size: 1rem;
+      text-decoration: none;
+      transition: border-color 0.3s, background 0.3s;
+    }
+    .footer-social:hover { border-color: var(--neon); background: rgba(255,45,85,0.1); }
+    .footer-col h4 {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 0.75rem; }
+    .footer-col ul a {
+      color: rgba(245,237,230,0.5);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.3s, padding-left 0.3s;
+    }
+    .footer-col ul a:hover { color: var(--cream); padding-left: 4px; }
+    .footer-bottom {
+      border-top: 1px solid rgba(245,237,230,0.06);
+      padding-top: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-bottom p {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--muted);
+      letter-spacing: 1px;
+    }
+    .footer-bottom a { color: var(--neon); text-decoration: none; }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes slideUp { from{opacity:0;transform:translateY(100%)} to{opacity:1;transform:translateY(0)} }
+
+    /* Mobile */
+    @media(max-width:768px) {
+      nav { padding: 1.2rem 1.5rem; }
+      .nav-links, .nav-cta { display: none; }
+      .hero { grid-template-columns: 1fr; padding: 7rem 1.5rem 4rem; gap: 3rem; }
+      .hero-right { height: 40vh; }
+      .hero-img-wrap { width: 200px; }
+      .intro { grid-template-columns: 1fr; padding: 5rem 1.5rem; gap: 3rem; }
+      .intro-collage { height: 300px; }
+      .products { padding: 5rem 1.5rem; }
+      .product-grid { grid-template-columns: 1fr 1fr; }
+      .philosophy { padding: 6rem 1.5rem; }
+      .tagline-section { padding: 5rem 1.5rem; }
+      footer { padding: 4rem 1.5rem 2rem; }
+      .footer-grid { grid-template-columns: 1fr 1fr; gap: 2rem; }
+    }
+
+  .collage-img img {
+    width: 100%;
+    display: block;
+    border: 4px solid white;
+    border-radius: 8px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  }
+
+  .intro-collage {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+  }
+
+  .collage-img {
+    width: 140px;
+    height: 140px;
+  }
+
+ .collage-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border: 4px solid white;
+    border-radius: 8px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    display: block;
+  }
+
+  .collage-img:nth-child(1) {
+    transform: rotate(-8deg) translateY(10px);
+  }
+
+  .collage-img:nth-child(2) {
+    transform: rotate(6deg) translateY(-8px);
+  }
+
+  .collage-img:nth-child(3) {
+    transform: rotate(-4deg) translateY(14px);
+  }
+  </style>
 </head>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="index.html" class="navbar-brand">LipLush</a>
-            
-            <ul class="nav-menu" id="nav-menu">
-                <li class="nav-item">
-                    <a href="index.html" class="nav-link active">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a href="about.html" class="nav-link">About</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a href="#" class="nav-link">Services</a>
-                    <div class="dropdown-content">
-                        <a href="#">Web Development</a>
-                        <a href="#">UI/UX Design</a>
-                        <a href="#">Consulting</a>
-                        <a href="#">Support</a>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">Contact</a>
-                </li>
-            </ul>
+  <div id="cursor"></div>
+  <div id="cursor-ring"></div>
 
-            <form class="search-form">
-                <input type="search" class="search-input" placeholder="Search...">
-                <button type="submit" class="search-btn">Search</button>
-            </form>
+  <!-- NAV -->
+  <nav>
+    <a href="index.html" class="nav-logo">Lip<span>Lush</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="#">Collections</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+    <button class="nav-cta">Shop Now</button>
+  </nav>
 
-            <button class="mobile-menu-toggle" id="mobile-toggle">☰</button>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-glow"></div>
+    <div class="hero-left">
+      <p class="hero-eyebrow">✦ SS 2025 Collection</p>
+      <h1 class="hero-title">
+        <span class="line"><span class="line-inner">Color.</span></span>
+        <span class="line"><span class="line-inner">Confidence.</span></span>
+        <span class="line"><span class="line-inner">You.</span></span>
+      </h1>
+      <p class="hero-sub">Unapologetically bold. Effortlessly luminous. LipLush is more than makeup — it's a statement.</p>
+      <div class="hero-actions">
+        <a href="#" class="btn-primary"><span>Shop Collection</span><span>→</span></a>
+        <a href="about.html" class="btn-ghost">Our Story</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-img-wrap">
+        <img src="lips.png" alt="LipLush hero product">
+        <div class="stat-pill">
+          <strong>50+</strong>
+          <small>Shades</small>
         </div>
-    </nav>
-
-    <!-- Main Content -->
-    <main class="main-content">
-        <div class="container">
-            <section class="hero-section">
-                <h1>Welcome to LipLush</h1>
-                <p>This is a beautiful LipLuxe website for all your lip care needs.</p>
-                <img src="lips.png" alt="" class="hero-image">
-            </section>
-            <section class="about-section">
-              <h1 class="autoShow">Introduction</h1>
-              <img src="flower.png" alt="" class="autoRotate">
-              <div class="content-row">
-                <img src="l1.png" alt="Lipstick product" class="autoShow">
-                <p class="autoShow">At Lush Lips, we believe beauty is all about confidence. Our lipsticks are designed to make you feel bold, radiant, and unstoppable. With rich colors, smooth textures, and long-lasting formulas, we bring you the perfect blend of style and comfort.</p>
-              </div>
-              <div class="content-row reverse">
-                <img src="heart.png" alt="Heart product" class="autoShow">
-                <p class="autoShow">We believe in creating products that enhance your natural beauty while keeping your lips healthy and moisturized. Our heart-inspired formulas provide long-lasting color and nourishment for every moment of your day.</p>
-              </div>
-              <div class="tagline">
-                <span class="autoBlur">Lip</span>
-                <span class="autoBlur">Lush</span>
-                <span class="autoBlur">Makes</span>
-                <span class="autoBlur">Your</span>
-                <span class="autoBlur">Day</span>
-                <span class="autoBlur">Beautiful</span>
-              </div>
-            </section>
-            
+        <div class="stat-pill">
+          <strong>12h</strong>
+          <small>Wear</small>
         </div>
-    </main>
+      </div>
+    </div>
+  </section>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3>MyWebsite</h3>
-                <p>Building amazing web experiences with modern technologies and clean design. We create beautiful, responsive websites that work perfectly on all devices.</p>
-                <div class="social-links">
-                    <a href="#">📘</a>
-                    <a href="#">🐦</a>
-                    <a href="#">💼</a>
-                    <a href="#">📷</a>
-                </div>
-            </div>
-            
-            <div class="footer-section">
-                <h3>Quick Links</h3>
-                <ul>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="about.html">About Us</a></li>
-                    <li><a href="#">Services</a></li>
-                    <li><a href="#">Portfolio</a></li>
-                    <li><a href="#">Contact</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-section">
-                <h3>Services</h3>
-                <ul>
-                    <li><a href="#">Web Development</a></li>
-                    <li><a href="#">UI/UX Design</a></li>
-                    <li><a href="#">Mobile Apps</a></li>
-                    <li><a href="#">SEO Optimization</a></li>
-                    <li><a href="#">Maintenance</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-section">
-                <h3>Contact Info</h3>
-                <p>📧 contact@mywebsite.com</p>
-                <p>📞 +1 (555) 123-4567</p>
-                <p>📍 123 Web Street, Digital City, DC 12345</p>
-                <p>🕒 Mon - Fri: 9:00 AM - 6:00 PM</p>
-            </div>
+  <!-- TICKER -->
+  <div class="ticker">
+    <div class="ticker-track">
+      <span>LipLush</span><span class="accent">✦</span>
+      <span>Bold Colors</span><span class="accent">✦</span>
+      <span>Long Wear</span><span class="accent">✦</span>
+      <span>Cruelty Free</span><span class="accent">✦</span>
+      <span>Gen-Z Approved</span><span class="accent">✦</span>
+      <span>LipLush</span><span class="accent">✦</span>
+      <span>Bold Colors</span><span class="accent">✦</span>
+      <span>Long Wear</span><span class="accent">✦</span>
+      <span>Cruelty Free</span><span class="accent">✦</span>
+      <span>Gen-Z Approved</span><span class="accent">✦</span>
+    </div>
+  </div>
+
+  <!-- INTRO -->
+  <section class="intro">
+    <div class="intro-number">01</div>
+    <div>
+      <p class="intro-label">Our Story</p>
+      <h2 class="intro-headline">
+        Beauty with<br>
+        <em>no rules.</em>
+      </h2>
+    </div>
+    <div class="intro-right">
+      <p>At LipLush, we believe <strong>beauty is all about confidence.</strong> Our lipsticks are designed to make you feel bold, radiant, and unstoppable. With rich colors, smooth textures, and long-lasting formulas — every shade is an act of rebellion.</p>
+      <p>We formulate for the ones who don't wait for permission. The ones who wear <strong>red on a Tuesday</strong> and double-apply at midnight. This is your color.</p>
+      <div class="intro-collage">
+        <div class="collage-img">
+          <img src="jessica.jpg" alt="Product">
         </div>
-        
-        <div class="footer-bottom">
-            <p>&copy; 2024 MyWebsite. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+        <div class="collage-img">
+          <img src="model2.jpg" alt="Heart">
         </div>
-    </footer>
+        <div class="collage-img">
+          <img src="woman.png" alt="Flower">
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <script>
-        // Mobile menu toggle functionality
-        document.getElementById('mobile-toggle').addEventListener('click', function() {
-            const navMenu = document.getElementById('nav-menu');
-            navMenu.classList.toggle('active');
-        });
+  <!-- MARQUEE -->
+  <div class="marquee-section">
+    <div class="marquee-line">
+      <div class="marquee-content">
+        <h2 class="filled">BOLD</h2><span class="marquee-diamond">◆</span>
+        <h2>RADIANT</h2><span class="marquee-diamond">◆</span>
+        <h2 class="accent">LUMINOUS</h2><span class="marquee-diamond">◆</span>
+        <h2 class="filled">BOLD</h2><span class="marquee-diamond">◆</span>
+        <h2>RADIANT</h2><span class="marquee-diamond">◆</span>
+        <h2 class="accent">LUMINOUS</h2><span class="marquee-diamond">◆</span>
+      </div>
+    </div>
+    <div class="marquee-line">
+      <div class="marquee-content reverse">
+        <h2>UNSTOPPABLE</h2><span class="marquee-diamond">◆</span>
+        <h2 class="filled">LIPLUSH</h2><span class="marquee-diamond">◆</span>
+        <h2 class="accent">YOU.</h2><span class="marquee-diamond">◆</span>
+        <h2>UNSTOPPABLE</h2><span class="marquee-diamond">◆</span>
+        <h2 class="filled">LIPLUSH</h2><span class="marquee-diamond">◆</span>
+        <h2 class="accent">YOU.</h2><span class="marquee-diamond">◆</span>
+      </div>
+    </div>
+  </div>
 
-        // Close mobile menu when clicking on a link
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', function() {
-                document.getElementById('nav-menu').classList.remove('active');
+  <!-- PRODUCTS -->
+  <section class="products">
+    <div class="section-header">
+      <h2 class="section-title">Featured<span>— Drop 001</span></h2>
+      <a href="#" class="see-all">View All →</a>
+    </div>
+    <div class="product-grid">
+      <div class="product-card">
+        <img class="product-img" src="rr.png" alt="Ruby Rush">
+        <div class="product-badge">NEW</div>
+        <div class="product-info">
+          <div class="product-shade" style="background:#c0392b"></div>
+          <p class="product-name">Ruby Rush</p>
+          <p class="product-price">$28.00</p>
+          <button class="product-add">+ Add to Bag</button>
+        </div>
+      </div>
+      <div class="product-card">
+        <img class="product-img" src="vc.png" alt="Velvet Crush">
+        <div class="product-badge gold">TRENDING</div>
+        <div class="product-info">
+          <div class="product-shade" style="background:#e8435a"></div>
+          <p class="product-name">Velvet Crush</p>
+          <p class="product-price">$32.00</p>
+          <button class="product-add">+ Add to Bag</button>
+        </div>
+      </div>
+      <div class="product-card">
+        <img class="product-img" src="rose.png" alt="Rose Riot">
+        <div class="product-info">
+          <div class="product-shade" style="background:#d4687a"></div>
+          <p class="product-name">Rose Riot</p>
+          <p class="product-price">$30.00</p>
+          <button class="product-add">+ Add to Bag</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PHILOSOPHY -->
+  <section class="philosophy">
+    <div class="philosophy-bg"></div>
+    <div class="phil-wrap">
+      <p class="intro-label" style="margin-bottom:3rem">Our Philosophy</p>
+      <h2 class="phil-quote" id="phil">
+        <span class="word neon">Every</span>
+        <span class="word"> </span>
+        <span class="word">shade</span>
+        <span class="word"> </span>
+        <span class="word italic neon">tells</span>
+        <span class="word"> </span>
+        <span class="word">a</span>
+        <span class="word"> </span>
+        <span class="word">story.</span>
+        <span class="word"> </span>
+        <span class="word italic">Make</span>
+        <span class="word"> </span>
+        <span class="word">yours</span>
+        <span class="word"> </span>
+        <span class="word neon">unforgettable.</span>
+      </h2>
+    </div>
+  </section>
+
+  <!-- TAGLINE -->
+  <section class="tagline-section">
+    <div class="tagline-grid">
+      <div class="tagline-word filled" data-scroll>Lip</div>
+      <div class="tagline-word" data-scroll>Lush</div>
+      <div class="tagline-word filled" data-scroll>Makes</div>
+      <div class="tagline-word neon-fill" data-scroll>Your</div>
+      <div class="tagline-word" data-scroll>Day</div>
+      <div class="tagline-word filled" data-scroll>Beautiful</div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-grid">
+      <div>
+        <p class="footer-brand">Lip<span>Lush</span></p>
+        <p class="footer-tagline">Curating the perfect shades to bring out your natural confidence. Elevate your everyday look.</p>
+        <div class="footer-socials">
+          <a href="#" class="footer-social">📘</a>
+          <a href="#" class="footer-social">🐦</a>
+          <a href="#" class="footer-social">📷</a>
+          <a href="#" class="footer-social">💼</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Navigate</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="#">Collections</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Products</h4>
+        <ul>
+          <li><a href="#">Lipsticks</a></li>
+          <li><a href="#">Lip Gloss</a></li>
+          <li><a href="#">Lip Liner</a></li>
+          <li><a href="#">Sets</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="#">divalove@liplush.com</a></li>
+          <li><a href="#">+1 (555) 123-4567</a></li>
+          <li><a href="#">Mon–Fri, 9–6 PM</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 LipLush. All rights reserved.</p>
+      <p><a href="#">Privacy Policy</a> &nbsp;|&nbsp; <a href="#">Terms</a></p>
+    </div>
+  </footer>
+
+  <script>
+    // Cursor
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursor-ring');
+    let mx=0,my=0,rx=0,ry=0;
+    document.addEventListener('mousemove',e=>{
+      mx=e.clientX; my=e.clientY;
+      cursor.style.left=mx+'px'; cursor.style.top=my+'px';
+    });
+    function animRing(){
+      rx+=(mx-rx)*0.12; ry+=(my-ry)*0.12;
+      ring.style.left=rx+'px'; ring.style.top=ry+'px';
+      requestAnimationFrame(animRing);
+    }
+    animRing();
+
+    // Scroll reveal
+    const observer = new IntersectionObserver(entries=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){
+          e.target.classList.add('visible');
+          // phil words staggered
+          if(e.target.id==='phil'){
+            e.target.querySelectorAll('.word').forEach((w,i)=>{
+              setTimeout(()=>w.classList.add('visible'),i*60);
             });
-        });
+          }
+        }
+      });
+    },{threshold:0.15});
 
-        // Search form functionality
-        document.querySelector('.search-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const searchTerm = document.querySelector('.search-input').value;
-            if (searchTerm.trim()) {
-                alert('Searching for: ' + searchTerm);
-            }
-        });
-
-    </script>
+    document.querySelectorAll('[data-scroll]').forEach(el=>observer.observe(el));
+    document.querySelectorAll('.tagline-word').forEach(el=>observer.observe(el));
+    observer.observe(document.getElementById('phil'));
+  </script>
 </body>
 </html>

@@ -1,168 +1,710 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About - Lip Lush</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — LipLush</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Unbounded:wght@300;400;700;900&family=Space+Mono:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #0a0608;
+      --cream: #f5ede6;
+      --blush: #e8435a;
+      --neon: #ff2d55;
+      --gold: #f0c040;
+      --muted: #9a8a85;
+      --glass: rgba(245,237,230,0.04);
+    }
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+    html{scroll-behavior:smooth;}
+    body{
+      background:var(--ink);
+      color:var(--cream);
+      font-family:'Syne',sans-serif;
+      cursor:none;
+      overflow-x:hidden;
+    }
+
+    /* CURSOR */
+    #cursor{position:fixed;width:12px;height:12px;background:var(--neon);border-radius:50%;pointer-events:none;z-index:9999;mix-blend-mode:difference;transition:transform 0.1s;transform:translate(-50%,-50%);}
+    #cursor-ring{position:fixed;width:40px;height:40px;border:1.5px solid rgba(255,45,85,0.5);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width 0.3s,height 0.3s,border-color 0.3s;}
+    body:has(a:hover) #cursor-ring,body:has(button:hover) #cursor-ring{width:70px;height:70px;border-color:var(--neon);}
+
+    /* NAVBAR */
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.5rem 4rem;display:flex;justify-content:space-between;align-items:center;}
+    nav::before{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(10,6,8,0.9),transparent);pointer-events:none;}
+    .nav-logo{font-family:'Unbounded',sans-serif;font-weight:900;font-size:1.4rem;letter-spacing:-1px;color:var(--cream);text-decoration:none;position:relative;z-index:1;}
+    .nav-logo span{color:var(--neon);}
+    .nav-links{display:flex;gap:3rem;list-style:none;position:relative;z-index:1;}
+    .nav-links a{color:var(--muted);text-decoration:none;font-size:0.8rem;letter-spacing:2px;text-transform:uppercase;transition:color 0.3s;}
+    .nav-links a:hover,.nav-links a.active{color:var(--cream);}
+    .nav-cta{position:relative;z-index:1;background:var(--neon);color:var(--ink);border:none;padding:0.6rem 1.8rem;font-family:'Unbounded',sans-serif;font-size:0.7rem;font-weight:700;letter-spacing:1px;cursor:none;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);transition:background 0.3s,transform 0.2s;}
+    .nav-cta:hover{background:var(--gold);transform:skewX(-5deg);}
+
+    /* ── HERO BANNER ── */
+    .about-hero {
+      min-height: 100vh;
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      overflow: hidden;
+      padding: 0 4rem 6rem;
+    }
+
+    /* Spinning 3D carousel */
+    .carousel-bg {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      perspective: 1200px;
+      pointer-events: none;
+    }
+    .carousel-ring {
+      position: absolute;
+      width: 140px;
+      height: 200px;
+      top: 12%;
+      left: 50%;
+      transform-style: preserve-3d;
+      animation: ringRotate 30s linear infinite;
+    }
+    .carousel-item {
+      position: absolute;
+      inset: 0;
+      padding: 10px;
+      transform: rotateY(calc(var(--pos) * (360deg / 10))) translateZ(380px);
+    }
+    .carousel-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 8px;
+      filter: saturate(0.5) brightness(0.6);
+      box-shadow: 0 0 30px rgba(255,45,85,0.2);
+    }
+    @keyframes ringRotate {
+      from{transform:rotateX(-12deg) rotateY(0deg);}
+      to{transform:rotateX(-12deg) rotateY(360deg);}
+    }
+
+    /* Big glow behind carousel */
+    .hero-glow {
+      position: absolute;
+      top: 20%; left: 50%;
+      transform: translateX(-50%);
+      width: 700px; height: 400px;
+      background: radial-gradient(ellipse, rgba(255,45,85,0.2) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* grain overlay */
+    .about-hero::before {
+      content:'';
+      position:absolute;
+      inset:0;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
+      opacity:0.3;
+      z-index:1;
+      pointer-events:none;
+      animation:grain 0.5s steps(2) infinite;
+    }
+    @keyframes grain{0%,100%{transform:translate(0,0)}10%{transform:translate(-2%,-3%)}30%{transform:translate(3%,2%)}50%{transform:translate(-1%,4%)}70%{transform:translate(2%,-1%)}90%{transform:translate(-3%,1%)}}
+
+    .about-hero-content {
+      position: relative;
+      z-index: 3;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+    .about-hero-title {
+      font-family: 'Unbounded', sans-serif;
+      font-size: clamp(5rem, 13vw, 12rem);
+      font-weight: 900;
+      line-height: 0.85;
+      letter-spacing: -5px;
+    }
+    .about-hero-title span { color: var(--neon); font-style: italic; }
+    .about-hero-sub {
+      text-align: right;
+      max-width: 280px;
+    }
+    .about-hero-sub h2 {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 300;
+      letter-spacing: -1px;
+      margin-bottom: 0.5rem;
+    }
+    .about-hero-sub p {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--neon);
+      letter-spacing: 2px;
+    }
+
+    /* Scroll line */
+    .scroll-line {
+      position: absolute;
+      bottom: 3rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .scroll-line span {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--muted);
+      writing-mode: vertical-lr;
+    }
+    .scroll-line::after {
+      content:'';
+      width: 1px;
+      height: 60px;
+      background: linear-gradient(to bottom, var(--neon), transparent);
+      animation: scrollPulse 1.5s ease-in-out infinite;
+    }
+    @keyframes scrollPulse { 0%,100%{opacity:0.3;height:40px} 50%{opacity:1;height:70px} }
+
+    /* ── TICKER ── */
+    .ticker{border-top:1px solid rgba(245,237,230,0.08);border-bottom:1px solid rgba(245,237,230,0.08);padding:1rem 0;overflow:hidden;white-space:nowrap;background:rgba(245,237,230,0.02);}
+    .ticker-track{display:inline-block;animation:ticker 18s linear infinite;}
+    .ticker-track span{font-family:'Unbounded',sans-serif;font-size:0.7rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--muted);padding:0 3rem;}
+    .ticker-track span.accent{color:var(--neon);}
+    @keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+    /* ── VALUES SECTION ── */
+    .values {
+      padding: 10rem 4rem;
+      position: relative;
+    }
+    .values-intro {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8rem;
+      align-items: start;
+      margin-bottom: 8rem;
+    }
+    .section-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--neon);
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+    }
+    .values-headline {
+      font-family: 'Unbounded', sans-serif;
+      font-size: clamp(2.5rem, 5vw, 4.5rem);
+      font-weight: 900;
+      line-height: 0.9;
+      letter-spacing: -3px;
+    }
+    .values-headline em { color: var(--neon); font-style: italic; display: block; }
+    .values-body p {
+      font-size: 1.05rem;
+      color: var(--muted);
+      line-height: 1.9;
+      margin-bottom: 1.5rem;
+    }
+    .values-body p strong { color: var(--cream); }
+    .values-body p:last-child { margin-bottom: 0; }
+
+    /* Value cards */
+    .value-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+    }
+    .value-card {
+      padding: 3rem 2.5rem;
+      border: 1px solid rgba(245,237,230,0.06);
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.4s;
+    }
+    .value-card::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--neon);
+      transform: scaleX(0);
+      transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
+      transform-origin: left;
+    }
+    .value-card:hover::before { transform: scaleX(1); }
+    .value-card:hover { border-color: rgba(255,45,85,0.2); }
+    .value-num {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 5rem;
+      font-weight: 900;
+      color: rgba(245,237,230,0.04);
+      line-height: 1;
+      margin-bottom: 1rem;
+    }
+    .value-icon { font-size: 2rem; margin-bottom: 1.5rem; }
+    .value-title {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      margin-bottom: 1rem;
+    }
+    .value-desc {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* ── TEAM ── */
+    .team {
+      padding: 8rem 4rem;
+    }
+    .team-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 5rem;
+    }
+    .team-title {
+      font-family: 'Unbounded', sans-serif;
+      font-size: clamp(2rem, 5vw, 4rem);
+      font-weight: 900;
+      letter-spacing: -3px;
+    }
+    .team-title span { color: var(--neon); font-style: italic; display: block; font-size: 0.65em; }
+    .team-role-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+
+    /* Role section */
+    .role-section { margin-bottom: 6rem; }
+    .role-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 4px;
+      color: var(--neon);
+      text-transform: uppercase;
+      padding: 0 0 1.5rem;
+      border-bottom: 1px solid rgba(255,45,85,0.2);
+      margin-bottom: 3rem;
+    }
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1px;
+    }
+    .team-card {
+      position: relative;
+      aspect-ratio: 1;
+      overflow: hidden;
+      background: rgba(245,237,230,0.03);
+      cursor: none;
+    }
+    .team-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(60%) saturate(0.8);
+      transition: transform 0.6s cubic-bezier(0.16,1,0.3,1), filter 0.4s;
+      display: block;
+    }
+    .team-card:hover img {
+      transform: scale(1.08);
+      filter: grayscale(0%) saturate(1.2);
+    }
+    .team-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(255,45,85,0.7) 0%, transparent 50%);
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+    .team-card:hover .team-overlay { opacity: 1; }
+    .team-card-label {
+      position: absolute;
+      bottom: 1rem;
+      left: 1rem;
+      right: 1rem;
+      font-family: 'Unbounded', sans-serif;
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      transform: translateY(10px);
+      opacity: 0;
+      transition: transform 0.3s, opacity 0.3s;
+    }
+    .team-card:hover .team-card-label { transform: translateY(0); opacity: 1; }
+
+    /* ── MANIFESTO ── */
+    .manifesto {
+      padding: 10rem 4rem;
+      position: relative;
+      overflow: hidden;
+      background: rgba(255,45,85,0.04);
+      border-top: 1px solid rgba(255,45,85,0.1);
+      border-bottom: 1px solid rgba(255,45,85,0.1);
+    }
+    .manifesto-inner {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .manifesto-eyebrow {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--neon);
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      margin-bottom: 3rem;
+    }
+    .manifesto-lines {
+      list-style: none;
+    }
+    .manifesto-line {
+      display: flex;
+      align-items: baseline;
+      gap: 1.5rem;
+      padding: 1.5rem 0;
+      border-bottom: 1px solid rgba(245,237,230,0.06);
+      opacity: 0;
+      transform: translateX(-30px);
+      transition: opacity 0.6s, transform 0.6s;
+    }
+    .manifesto-line.visible { opacity: 1; transform: translateX(0); }
+    .manifesto-line-num {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--neon);
+      flex-shrink: 0;
+      width: 2rem;
+    }
+    .manifesto-line-text {
+      font-family: 'Unbounded', sans-serif;
+      font-size: clamp(1.2rem, 3vw, 2rem);
+      font-weight: 700;
+      letter-spacing: -1px;
+      line-height: 1.2;
+    }
+    .manifesto-line-text em { font-style: italic; color: var(--neon); }
+
+    /* ── MARQUEE ── */
+    .marquee-section{padding:5rem 0;overflow:hidden;}
+    .marquee-line{display:flex;gap:0;margin-bottom:1.5rem;overflow:hidden;}
+    .marquee-content{display:flex;gap:4rem;align-items:center;animation:marquee 12s linear infinite;white-space:nowrap;flex-shrink:0;}
+    .marquee-content.reverse{animation-direction:reverse;animation-duration:15s;}
+    .marquee-content h2{font-family:'Unbounded',sans-serif;font-size:clamp(3rem,6vw,5rem);font-weight:900;color:transparent;-webkit-text-stroke:1px rgba(245,237,230,0.2);letter-spacing:-2px;white-space:nowrap;}
+    .marquee-content h2.filled{color:var(--cream);-webkit-text-stroke:none;}
+    .marquee-content h2.accent{color:var(--neon);-webkit-text-stroke:none;}
+    .marquee-diamond{color:var(--neon);font-size:1.5rem;flex-shrink:0;}
+    @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+    /* FOOTER */
+    footer{border-top:1px solid rgba(245,237,230,0.06);padding:6rem 4rem 3rem;}
+    .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:4rem;margin-bottom:5rem;}
+    .footer-brand{font-family:'Unbounded',sans-serif;font-size:1.8rem;font-weight:900;letter-spacing:-2px;margin-bottom:1rem;}
+    .footer-brand span{color:var(--neon);}
+    .footer-tagline{font-size:0.9rem;color:var(--muted);line-height:1.7;max-width:280px;margin-bottom:2rem;}
+    .footer-socials{display:flex;gap:1rem;}
+    .footer-social{width:40px;height:40px;border:1px solid rgba(245,237,230,0.1);display:flex;align-items:center;justify-content:center;font-size:1rem;text-decoration:none;transition:border-color 0.3s,background 0.3s;}
+    .footer-social:hover{border-color:var(--neon);background:rgba(255,45,85,0.1);}
+    .footer-col h4{font-family:'Space Mono',monospace;font-size:0.7rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:1.5rem;}
+    .footer-col ul{list-style:none;}
+    .footer-col ul li{margin-bottom:0.75rem;}
+    .footer-col ul a{color:rgba(245,237,230,0.5);text-decoration:none;font-size:0.9rem;transition:color 0.3s,padding-left 0.3s;}
+    .footer-col ul a:hover{color:var(--cream);padding-left:4px;}
+    .footer-bottom{border-top:1px solid rgba(245,237,230,0.06);padding-top:2rem;display:flex;justify-content:space-between;align-items:center;}
+    .footer-bottom p{font-family:'Space Mono',monospace;font-size:0.65rem;color:var(--muted);letter-spacing:1px;}
+    .footer-bottom a{color:var(--neon);text-decoration:none;}
+
+    /* Mobile */
+    @media(max-width:768px){
+      nav{padding:1.2rem 1.5rem;}
+      .nav-links,.nav-cta{display:none;}
+      .about-hero{padding:0 1.5rem 4rem;min-height:80vh;}
+      .about-hero-title{font-size:clamp(3rem,15vw,5rem);letter-spacing:-3px;}
+      .about-hero-content{flex-direction:column;align-items:flex-start;gap:2rem;}
+      .about-hero-sub{text-align:left;}
+      .values{padding:5rem 1.5rem;}
+      .values-intro{grid-template-columns:1fr;gap:3rem;margin-bottom:4rem;}
+      .value-cards{grid-template-columns:1fr;}
+      .team{padding:5rem 1.5rem;}
+      .team-grid{grid-template-columns:repeat(3,1fr);}
+      .manifesto{padding:6rem 1.5rem;}
+      footer{padding:4rem 1.5rem 2rem;}
+      .footer-grid{grid-template-columns:1fr 1fr;gap:2rem;}
+    }
+  </style>
 </head>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="index.html" class="navbar-brand">LipLush</a>
-            
-            <ul class="nav-menu" id="nav-menu">
-                <li class="nav-item">
-                    <a href="index.html" class="nav-link">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a href="about.html" class="nav-link active">About</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a href="#" class="nav-link">Services</a>
-                    <div class="dropdown-content">
-                        <a href="#">Web Development</a>
-                        <a href="#">UI/UX Design</a>
-                        <a href="#">Consulting</a>
-                        <a href="#">Support</a>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">Contact</a>
-                </li>
-            </ul>
+  <div id="cursor"></div>
+  <div id="cursor-ring"></div>
 
-            <form class="search-form">
-                <input type="search" class="search-input" placeholder="Search...">
-                <button type="submit" class="search-btn">Search</button>
-            </form>
+  <!-- NAV -->
+  <nav>
+    <a href="index.html" class="nav-logo">Lip<span>Lush</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html" class="active">About</a></li>
+      <li><a href="#">Collections</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+    <button class="nav-cta">Shop Now</button>
+  </nav>
 
-            <button class="mobile-menu-toggle" id="mobile-toggle">☰</button>
+  <!-- HERO -->
+  <section class="about-hero">
+    <div class="hero-glow"></div>
+
+    <!-- 3D Carousel -->
+    <div class="carousel-bg">
+      <div class="carousel-ring">
+        <div class="carousel-item" style="--pos:0"><img src="img1.jpeg" alt=""></div>
+        <div class="carousel-item" style="--pos:1"><img src="img2.jpeg" alt=""></div>
+        <div class="carousel-item" style="--pos:2"><img src="img3.jpeg" alt=""></div>
+        <div class="carousel-item" style="--pos:3"><img src="img4.jpeg" alt=""></div>
+        <div class="carousel-item" style="--pos:4"><img src="img5.jpeg" alt=""></div>
+        <div class="carousel-item" style="--pos:5"><img src="img6.jpeg" alt=""></div>
+        <div class="carousel-item" style="--pos:6"><img src="img7.jpeg" alt=""></div>
+        <div class="carousel-item" style="--pos:7"><img src="img8.jpeg" alt=""></div>
+        <div class="carousel-item" style="--pos:8"><img src="img9.jpeg" alt=""></div>
+        <div class="carousel-item" style="--pos:9"><img src="img10.jpeg" alt=""></div>
+      </div>
+    </div>
+
+    <div class="about-hero-content">
+      <div>
+        <h1 class="about-hero-title">About<br><span>Us.</span></h1>
+      </div>
+      <div class="about-hero-sub">
+        <h2>LipLush</h2>
+        <p>It's all about LoVe &amp; cArE !!!</p>
+      </div>
+    </div>
+    <div class="scroll-line"><span>Scroll</span></div>
+  </section>
+
+  <!-- TICKER -->
+  <div class="ticker">
+    <div class="ticker-track">
+      <span>Love</span><span class="accent">✦</span>
+      <span>Care</span><span class="accent">✦</span>
+      <span>Confidence</span><span class="accent">✦</span>
+      <span>Bold</span><span class="accent">✦</span>
+      <span>LipLush</span><span class="accent">✦</span>
+      <span>Love</span><span class="accent">✦</span>
+      <span>Care</span><span class="accent">✦</span>
+      <span>Confidence</span><span class="accent">✦</span>
+      <span>Bold</span><span class="accent">✦</span>
+      <span>LipLush</span><span class="accent">✦</span>
+    </div>
+  </div>
+
+  <!-- VALUES -->
+  <section class="values">
+    <div class="values-intro">
+      <div>
+        <p class="section-label">Who We Are</p>
+        <h2 class="values-headline">
+          Built on<br>
+          <em>passion &amp;<br>purpose.</em>
+        </h2>
+      </div>
+      <div class="values-body">
+        <p>At LipLush, we believe beauty is all about <strong>confidence.</strong> Our lipsticks are designed to make you feel bold, radiant, and unstoppable. With rich colors, smooth textures, and long-lasting formulas.</p>
+        <p>We believe in creating products that <strong>enhance your natural beauty</strong> while keeping your lips healthy and moisturized. Our heart-inspired formulas provide long-lasting color and nourishment for every moment of your day.</p>
+        <p>No rules. No permission needed. Just <strong>you, your color, your story.</strong></p>
+      </div>
+    </div>
+
+    <div class="value-cards">
+      <div class="value-card">
+        <div class="value-num">01</div>
+        <div class="value-icon">💄</div>
+        <h3 class="value-title">Bold Expression</h3>
+        <p class="value-desc">Every formula is a permission slip to be exactly who you are. No filters needed.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-num">02</div>
+        <div class="value-icon">🌸</div>
+        <h3 class="value-title">Clean Beauty</h3>
+        <p class="value-desc">Cruelty-free, vegan formulas that love your lips back. Beauty without compromise.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-num">03</div>
+        <div class="value-icon">✦</div>
+        <h3 class="value-title">Inclusive Shades</h3>
+        <p class="value-desc">50+ shades designed for every skin tone, every mood, every version of you.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- MANIFESTO -->
+  <section class="manifesto">
+    <div class="manifesto-inner">
+      <p class="manifesto-eyebrow">Our Manifesto</p>
+      <ul class="manifesto-lines">
+        <li class="manifesto-line" data-scroll>
+          <span class="manifesto-line-num">01</span>
+          <span class="manifesto-line-text">We color <em>outside</em> the lines.</span>
+        </li>
+        <li class="manifesto-line" data-scroll style="transition-delay:0.1s">
+          <span class="manifesto-line-num">02</span>
+          <span class="manifesto-line-text">We wear <em>red on Tuesdays.</em></span>
+        </li>
+        <li class="manifesto-line" data-scroll style="transition-delay:0.2s">
+          <span class="manifesto-line-num">03</span>
+          <span class="manifesto-line-text">We <em>double apply</em> at midnight.</span>
+        </li>
+        <li class="manifesto-line" data-scroll style="transition-delay:0.3s">
+          <span class="manifesto-line-num">04</span>
+          <span class="manifesto-line-text">We never ask for <em>permission.</em></span>
+        </li>
+        <li class="manifesto-line" data-scroll style="transition-delay:0.4s">
+          <span class="manifesto-line-num">05</span>
+          <span class="manifesto-line-text">This is your <em>canvas.</em></span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- TEAM -->
+  <section class="team">
+    <div class="team-header">
+      <h2 class="team-title">The People<span>— Behind LipLush</span></h2>
+      <span class="team-role-label">Our Crew</span>
+    </div>
+
+    <div class="role-section">
+      <p class="role-label">Chairpersons</p>
+      <div class="team-grid">
+        <div class="team-card"><img src="h1.jpeg" alt=""><div class="team-overlay"></div><div class="team-card-label">Chairperson</div></div>
+        <div class="team-card"><img src="h2.jpeg" alt=""><div class="team-overlay"></div><div class="team-card-label">Chairperson</div></div>
+        <div class="team-card"><img src="h3.jpeg" alt=""><div class="team-overlay"></div><div class="team-card-label">Chairperson</div></div>
+        <div class="team-card"><img src="h9.jpeg" alt=""><div class="team-overlay"></div><div class="team-card-label">Chairperson</div></div>
+        <div class="team-card"><img src="h14.jpeg" alt=""><div class="team-overlay"></div><div class="team-card-label">Chairperson</div></div>
+      </div>
+    </div>
+
+    <div class="role-section">
+      <p class="role-label">Marketing Heads</p>
+      <div class="team-grid">
+        <div class="team-card"><img src="h4.jpeg" alt=""><div class="team-overlay"></div><div class="team-card-label">Marketing Head</div></div>
+        <div class="team-card"><img src="h5.jpeg" alt=""><div class="team-overlay"></div><div class="team-card-label">Marketing Head</div></div>
+        <div class="team-card"><img src="h6.jpeg" alt=""><div class="team-overlay"></div><div class="team-card-label">Marketing Head</div></div>
+        <div class="team-card"><img src="h15.jpeg" alt=""><div class="team-overlay"></div><div class="team-card-label">Marketing Head</div></div>
+        <div class="team-card"><img src="h12.jpeg" alt=""><div class="team-overlay"></div><div class="team-card-label">Marketing Head</div></div>
+      </div>
+    </div>
+
+    <div class="role-section">
+      <p class="role-label">Secretaries</p>
+      <div class="team-grid">
+        <div class="team-card"><img src="h7.jpeg" alt=""><div class="team-overlay"></div><div class="team-card-label">Secretary</div></div>
+        <div class="team-card"><img src="h8.jpeg" alt=""><div class="team-overlay"></div><div class="team-card-label">Secretary</div></div>
+        <div class="team-card"><img src="h13.jpeg" alt=""><div class="team-overlay"></div><div class="team-card-label">Secretary</div></div>
+        <div class="team-card"><img src="h11.jpeg" alt=""><div class="team-overlay"></div><div class="team-card-label">Secretary</div></div>
+        <div class="team-card"><img src="h10.jpeg" alt=""><div class="team-overlay"></div><div class="team-card-label">Secretary</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee-section">
+    <div class="marquee-line">
+      <div class="marquee-content">
+        <h2 class="filled">ABOUT US</h2><span class="marquee-diamond">◆</span>
+        <h2>LIPLUSH</h2><span class="marquee-diamond">◆</span>
+        <h2 class="accent">LOVE & CARE</h2><span class="marquee-diamond">◆</span>
+        <h2 class="filled">ABOUT US</h2><span class="marquee-diamond">◆</span>
+        <h2>LIPLUSH</h2><span class="marquee-diamond">◆</span>
+        <h2 class="accent">LOVE & CARE</h2><span class="marquee-diamond">◆</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-grid">
+      <div>
+        <p class="footer-brand">Lip<span>Lush</span></p>
+        <p class="footer-tagline">Curating the perfect shades to bring out your natural confidence. Elevate your everyday look.</p>
+        <div class="footer-socials">
+          <a href="#" class="footer-social">📘</a>
+          <a href="#" class="footer-social">🐦</a>
+          <a href="#" class="footer-social">📷</a>
+          <a href="#" class="footer-social">💼</a>
         </div>
-    </nav>
+      </div>
+      <div class="footer-col">
+        <h4>Navigate</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="#">Collections</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Products</h4>
+        <ul>
+          <li><a href="#">Lipsticks</a></li>
+          <li><a href="#">Lip Gloss</a></li>
+          <li><a href="#">Lip Liner</a></li>
+          <li><a href="#">Sets</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="#">divalove@liplush.com</a></li>
+          <li><a href="#">+1 (555) 123-4567</a></li>
+          <li><a href="#">Mon–Fri, 9–6 PM</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 LipLush. All rights reserved.</p>
+      <p><a href="#">Privacy Policy</a> &nbsp;|&nbsp; <a href="#">Terms</a></p>
+    </div>
+  </footer>
 
-    <!-- Main Content -->
-    <main class="main-content">
-        <div class="banner"> 
-            <div class="slider" style="--quantity:10">
-                <div class="item1" style="--position:1"><img src="img1.jpeg" alt=""></div>
-                <div class="item2" style="--position:2"><img src="img2.jpeg" alt=""></div>
-                <div class="item3"  style="--position:3"><img src="img3.jpeg" alt=""></div>
-                <div class="item4" style="--position:4"><img src="img4.jpeg" alt=""></div>
-                <div class="item5" style="--position:5"><img src="img5.jpeg" alt=""></div>
-                <div class="item6" style="--position:6"><img src="img6.jpeg" alt=""></div>
-                <div class="item7" style="--position:7"><img src="img7.jpeg" alt=""></div>
-                <div class="item8" style="--position:8"><img src="img8.jpeg" alt=""></div>
-                <div class="item9" style="--position:9"><img src="img9.jpeg" alt=""></div>
-                <div class="item10" style="--position:10"><img src="img10.jpeg" alt=""></div>
-            </div>
-            <div class="content">
-                <h1 data-content="About Us">
-                About Us
-                </h1>
-                <div class="author">
-                    <h2>Lip Lush </h2>
-                    <p><b>Its all about LoVe and cArE !!!</b></p>
-                </div>
-                <div class="model"></div>
-            </div>
-        </div>
-        <div class="list">
-            <h2>Our Chairpersons</h2>
-            <div class="item"><img src="h1.jpeg"></div>
-            <div class="item"><img src="h2.jpeg"></div>
-            <div class="item"><img src="h3.jpeg"></div>
-            <div class="item"><img src="h9.jpeg"></div>
-            <div class="item"><img src="h14.jpeg"></div>
-            <h2>Our Marketing Heads</h2>
-            <div class="item"><img src="h4.jpeg"></div>
-            <div class="item"><img src="h5.jpeg"></div>
-            <div class="item"><img src="h6.jpeg"></div>
-            <div class="item"><img src="h15.jpeg"></div>
-            <div class="item"><img src="h12.jpeg"></div>
-            <h2>Our Secretary</h2>
-            <div class="item"><img src="h7.jpeg"></div>
-            <div class="item"><img src="h8.jpeg"></div>
-            <div class="item"><img src="h13.jpeg"></div>
-            <div class="item"><img src="h11.jpeg"></div>
-            <div class="item"><img src="h10.jpeg"></div>
-        </div>
-    </main>
+  <script>
+    // Cursor
+    const cursor=document.getElementById('cursor');
+    const ring=document.getElementById('cursor-ring');
+    let mx=0,my=0,rx=0,ry=0;
+    document.addEventListener('mousemove',e=>{
+      mx=e.clientX;my=e.clientY;
+      cursor.style.left=mx+'px';cursor.style.top=my+'px';
+    });
+    function animRing(){
+      rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;
+      ring.style.left=rx+'px';ring.style.top=ry+'px';
+      requestAnimationFrame(animRing);
+    }
+    animRing();
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3>MyWebsite</h3>
-                <p>Building amazing web experiences with modern technologies and clean design. We create beautiful, responsive websites that work perfectly on all devices.</p>
-                <div class="social-links">
-                    <a href="#">📘</a>
-                    <a href="#">🐦</a>
-                    <a href="#">💼</a>
-                    <a href="#">📷</a>
-                </div>
-            </div>
-            
-            <div class="footer-section">
-                <h3>Quick Links</h3>
-                <ul>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="about.html">About Us</a></li>
-                    <li><a href="#">Services</a></li>
-                    <li><a href="#">Portfolio</a></li>
-                    <li><a href="#">Contact</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-section">
-                <h3>Services</h3>
-                <ul>
-                    <li><a href="#">Web Development</a></li>
-                    <li><a href="#">UI/UX Design</a></li>
-                    <li><a href="#">Mobile Apps</a></li>
-                    <li><a href="#">SEO Optimization</a></li>
-                    <li><a href="#">Maintenance</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-section">
-                <h3>Contact Info</h3>
-                <p>📧 contact@mywebsite.com</p>
-                <p>📞 +1 (555) 123-4567</p>
-                <p>📍 123 Web Street, Digital City, DC 12345</p>
-                <p>🕒 Mon - Fri: 9:00 AM - 6:00 PM</p>
-            </div>
-        </div>
-        
-        <div class="footer-bottom">
-            <p>&copy; 2024 MyWebsite. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
-        </div>
-    </footer>
+    // Scroll reveal
+    const observer=new IntersectionObserver(entries=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting) e.target.classList.add('visible');
+      });
+    },{threshold:0.15});
 
-    <script>
-        // Mobile menu toggle functionality
-        document.getElementById('mobile-toggle').addEventListener('click', function() {
-            const navMenu = document.getElementById('nav-menu');
-            navMenu.classList.toggle('active');
-        });
-
-        // Close mobile menu when clicking on a link
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', function() {
-                document.getElementById('nav-menu').classList.remove('active');
-            });
-        });
-
-        // Search form functionality
-        document.querySelector('.search-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const searchTerm = document.querySelector('.search-input').value;
-            if (searchTerm.trim()) {
-                alert('Searching for: ' + searchTerm);
-            }
-        });
-    </script>
+    document.querySelectorAll('[data-scroll]').forEach(el=>observer.observe(el));
+  </script>
 </body>
 </html>
-
