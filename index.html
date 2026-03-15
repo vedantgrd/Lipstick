@@ -817,6 +817,29 @@
       transform: translateY(0);
     }
 }
+
+::-webkit-scrollbar {
+  width: 10px; 
+}
+
+::-webkit-scrollbar-track {
+  background: var(--ink); 
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--neon); 
+  border-radius: 5px;
+  border: 2px solid var(--ink);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gold); 
+}
+
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--neon) var(--ink); 
+}
   </style>
 </head>
 <body>
